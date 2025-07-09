@@ -6,8 +6,6 @@ const Chat = require('./models/chat.js');
 const chat = require("./models/chat.js");
 const methodOverride = require("method-override")
 
-const PORT = process.env.PORT || 10000;
-
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine", "ejs")
 app.use(express.static(path.join(__dirname, "public")))
@@ -81,6 +79,6 @@ app.get("/",(req,res)=> {
     res.send("Root is working")
 })
 
-app.listen(PORT, ()=> {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(8080, ()=> {
+    console.log(Server is running on port 8080);
 })
