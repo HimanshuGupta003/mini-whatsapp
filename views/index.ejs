@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WhatsApp Web</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp</span>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="icon-btn">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat List Header -->
+    <div class="chat-list-header">
+      <h1>Chats</h1>
+      <form action="chats/new" method="get">
+        <button class="new-chat-btn">
+          <i class="fas fa-plus"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Chat List -->
+    <div class="chat-list">
+      <% for (let chat of chats) { %>
+        <div class="chat-item">
+          <div class="chat-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          
+          <div class="chat-content">
+            <div class="chat-header">
+              <span class="chat-name"><%= chat.from %></span>
+              <span class="chat-time">
+                <%= chat.created_at.toString().split(" ")[4].slice(0, 5) %>
+              </span>
+            </div>
+            
+            <div class="chat-preview">
+              <p class="last-message"><%= chat.msg.length > 50 ? chat.msg.substring(0, 50) + '...' : chat.msg %></p>
+              <div class="message-status">
+                <i class="fas fa-check-double"></i>
+              </div>
+            </div>
+            
+            <div class="chat-meta">
+              <span class="recipient">To: <%= chat.to %></span>
+              <span class="date">
+                <%= chat.created_at.toString().split(" ").slice(0,3).join(" ") %>
+              </span>
+            </div>
+          </div>
+          
+          <div class="chat-actions">
+            <div class="action-dropdown">
+              <button class="action-btn">
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="dropdown-menu">
+                <form method="get" action="/chats/<%= chat._id %>/edit">
+                  <button class="dropdown-item edit-item">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                </form>
+                <form class="delete-form" method="post" action="/chats/<%= chat._id %>?_method=Delete">
+                  <button class="dropdown-item delete-item">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Empty State -->
+    <% if (chats.length === 0) { %>
+      <div class="empty-state">
+        <i class="fas fa-comments"></i>
+        <h3>No chats yet</h3>
+        <p>Start a new conversation</p>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading conversations...</p>
+    </div>
+  </div>
+
+  <script src="/loader.js"></script>
+</body>
+</html>
